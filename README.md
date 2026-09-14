@@ -1,70 +1,88 @@
-# Sleep Window
+# Sleep Window — Sleep Cycle Calculator
 
-Free sleep-cycle calculator Chrome extension (Manifest V3) by [Hypnothera](https://hypnothera.ai).
+**Sleep Window** is a free, open-source Chrome extension that calculates bedtime and wake-up times from 90-minute sleep cycles. It runs entirely in the browser popup: no account, no analytics, no data leaving your device.
 
-Popup-only tool: pick a wake time or bedtime, adjust minutes-to-fall-asleep, and see suggested 3–6 cycle windows (90 minutes each). Includes an optional local bedtime reminder and a 2-minute offline wind-down breath. All math runs on-device.
+Made by [Hypnothera](https://hypnothera.ai), an AI hypnosis app for personalized sleep and focus sessions.
 
-**Homepage must stay:** https://hypnothera.ai
+Chrome Web Store listing is pending review. Homepage: [hypnothera.ai](https://hypnothera.ai).
 
-## Load unpacked (development)
+## What it does
 
-1. Open Chrome and go to `chrome://extensions`
-2. Turn on **Developer mode** (top right)
-3. Click **Load unpacked**
-4. Select this folder (the one that contains `manifest.json`)
-5. Click the Sleep Window icon in the toolbar to open the popup
+- **Wake mode** — enter the time you need to wake up; see suggested bedtimes for 3, 4, 5, and 6 cycles
+- **Sleep mode** — enter bedtime, or tap Sleep now, to see suggested wake times
+- **5-cycle highlight** — 7.5 hours is marked as the usual pick
+- **Fall-asleep buffer** — 0–30 minutes (default 14) so the math includes time to drift off
+- **Optional bedtime reminder** — a local Chrome notification, opt-in only
+- **2-minute wind-down** — offline breathing pacer in the popup
 
-No build step. No npm. Vanilla HTML/CSS/JS only.
+## How 90-minute sleep cycles work
 
-## Pack for distribution
+Adult sleep is often described as repeating **cycles** of lighter sleep, deeper sleep, and REM. A commonly used planning figure is **about 90 minutes per cycle**. The idea behind a sleep cycle calculator is simple:
 
-1. On `chrome://extensions`, click **Pack extension** (or use the Chrome Web Store Developer Dashboard zip upload)
-2. Select this extension root (the folder containing `manifest.json`)
-3. Upload the zip of the root contents (not a parent folder) to the Chrome Web Store
+1. Decide when you need to wake (or when you will go to bed).
+2. Count backward (or forward) in 90-minute blocks.
+3. Add a few minutes to fall asleep.
+4. Aim to wake near the end of a cycle, when many people feel less groggy than if they are pulled out of deeper sleep.
 
-Suggested zip contents: `manifest.json`, `popup.html`, `popup.css`, `popup.js`, `background.js`, `icons/`, plus listing docs if desired (not required at runtime).
+Sleep Window shows four windows:
 
-```bash
-cd /workspace/sleep-window
-zip -r ../sleep-window.zip manifest.json popup.html popup.css popup.js background.js icons README.md STORE_LISTING.md EXTENSION_PRIVACY.md
-```
+| Cycles | Time asleep |
+| ------ | ----------- |
+| 3 | 4 hours 30 minutes |
+| 4 | 6 hours |
+| 5 | 7 hours 30 minutes (highlighted) |
+| 6 | 9 hours |
 
-## Chrome Web Store checklist
+This is a **planning heuristic**, not a measurement of your sleep. Cycle length varies by person and by night. Sleep Window does not read a wearable, does not diagnose insomnia, and is not a medical device.
 
-- [ ] `homepage_url` is `https://hypnothera.ai` (do not change)
-- [ ] Privacy policy URL: https://hypnothera.ai/privacy
-- [ ] Single purpose described clearly (sleep cycle / bedtime / wake-time calculator)
-- [ ] Permissions justified (`storage`, `alarms`, `notifications`) — see `STORE_LISTING.md` and `EXTENSION_PRIVACY.md`
-- [ ] No remote code, no CDNs, no analytics
-- [ ] Icons 128×128 (and 16/32/48) included
-- [ ] Screenshots 1280×800 (generate from UI if not present — see note below)
-- [ ] Store listing copy from `STORE_LISTING.md`
-- [ ] Category: Productivity (or Lifestyle)
-- [ ] Confirm disclaimer: planning heuristic, not medical advice / not a medical device
+## How the math works
 
-## Screenshots
+All calculation is local JavaScript in `popup.js`.
 
-Store screenshots (1280×800) are in `store/`:
+- Cycle length = 90 minutes
+- Wake mode bedtime = wake time − (cycles × 90) − fall-asleep minutes
+- Sleep mode wake time = bedtime + fall-asleep minutes + (cycles × 90)
+- Times wrap across midnight
 
-- `store/screenshot-1-wake.png`
-- `store/screenshot-2-cycles.png`
+Preferences (wake time, fall-asleep minutes, last mode, reminder on/off) stay in `chrome.storage.local`. The optional reminder uses `chrome.alarms` and `chrome.notifications` on this device only.
 
-They are marketing frames around a headless render of `popup.html`. Re-capture from a live loaded extension if you want toolbar chrome in the shot.
+## Install
 
-## Features
+### From source (load unpacked)
 
-- Modes: “I need to wake at…” and “I’m going to sleep at…” / Sleep now
-- Shows 3, 4, 5, 6 cycles; highlights 5 cycles (7.5h)
-- Adjustable fall-asleep buffer (0–30 min, default 14)
-- Preferences in `chrome.storage.local`
-- Optional bedtime reminder (`chrome.alarms` + `notifications`), opt-in with UI explanation
-- 2-minute guided breathing in the popup (visual pacer; `prefers-reduced-motion` respected; optional local Web Audio tone)
-- Quiet funnel links to Hypnothera with UTM parameters
+1. Clone this repo
+2. Open Chrome → `chrome://extensions`
+3. Turn on **Developer mode**
+4. **Load unpacked** → select this folder (the one with `manifest.json`)
+
+No build step. No npm. Manifest V3, vanilla HTML/CSS/JS.
+
+### Chrome Web Store
+
+The listing is submitted and pending review. When it is live, this README will point at the Store URL. The Store homepage is [hypnothera.ai](https://hypnothera.ai).
 
 ## Privacy
 
-Zero data collection. See `EXTENSION_PRIVACY.md`.
+Sleep Window collects **zero** user data. No accounts, no telemetry, no remote scripts, no CDNs. Details: [`EXTENSION_PRIVACY.md`](EXTENSION_PRIVACY.md) and [hypnothera.ai/privacy](https://hypnothera.ai/privacy).
+
+## Want a session written for tonight?
+
+If a calculated bedtime is not enough, [Hypnothera](https://hypnothera.ai/sleep-hypnosis-generator) can generate a personalized sleep hypnosis session from what is actually keeping you up. The extension links there; the calculator works fine without it.
+
+## FAQ
+
+**Is this medical advice?**  
+No. It is a convenience calculator for education and planning.
+
+**Why 14 minutes to fall asleep?**  
+It is a default buffer you can change (0–30). It is not a claim about how long you take to fall asleep.
+
+**Does it work offline?**  
+Yes. The calculator and wind-down do not need a network. Links you choose to open (Hypnothera) are normal browser navigations.
+
+**Can I reuse this?**  
+Yes, under the MIT License. Keep the copyright notice.
 
 ## License
 
-Proprietary — Hypnothera. Free to install from the Chrome Web Store when published.
+[MIT](LICENSE) © 2026 Hypnothera / La Salida
