@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sleep Window</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="header">
+      <div class="brand">
+        <img class="brand-mark" src="icons/icon32.png" width="24" height="24" alt="" />
+        <div>
+          <h1 class="title">Sleep Window</h1>
+          <p class="tagline">90-minute cycle planner</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="modes" role="tablist" aria-label="Calculator mode">
+      <button type="button" class="mode-btn is-active" role="tab" aria-selected="true" data-mode="wake" id="mode-wake">
+        I need to wake at…
+      </button>
+      <button type="button" class="mode-btn" role="tab" aria-selected="false" data-mode="sleep" id="mode-sleep">
+        I’m going to sleep at…
+      </button>
+    </nav>
+
+    <section class="controls" aria-label="Time inputs">
+      <div class="field-row" id="wake-fields">
+        <label class="label" for="wake-time">Wake time</label>
+        <input type="time" id="wake-time" class="time-input" value="07:00" />
+      </div>
+      <div class="field-row is-hidden" id="sleep-fields">
+        <label class="label" for="sleep-time">Bedtime</label>
+        <div class="sleep-row">
+          <input type="time" id="sleep-time" class="time-input" value="23:00" />
+          <button type="button" class="btn btn-ghost" id="sleep-now" title="Use the current time">
+            Sleep now
+          </button>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="label" for="fall-asleep">
+          Minutes to fall asleep
+          <span class="hint" id="fall-value">14</span>
+        </label>
+        <input
+          type="range"
+          id="fall-asleep"
+          min="0"
+          max="30"
+          value="14"
+          step="1"
+          aria-valuemin="0"
+          aria-valuemax="30"
+          aria-valuenow="14"
+        />
+      </div>
+    </section>
+
+    <section class="results" aria-live="polite" aria-atomic="true">
+      <h2 class="results-heading" id="results-heading">Best bedtimes</h2>
+      <ul class="cycle-list" id="cycle-list"></ul>
+      <p class="disclaimer">
+        Planning heuristic only — not medical advice, not a medical device, and not a treatment for insomnia or any condition. Your body isn’t a clock; use this as a gentle guide.
+      </p>
+    </section>
+
+    <section class="winddown" aria-labelledby="winddown-title">
+      <div class="winddown-header">
+        <h2 class="section-title" id="winddown-title">2-minute wind-down</h2>
+        <button type="button" class="btn btn-ghost" id="breathe-toggle" aria-expanded="false" aria-controls="breathe-panel">
+          Begin
+        </button>
+      </div>
+      <div class="breathe-panel is-collapsed" id="breathe-panel" hidden>
+        <div class="pacer-wrap" aria-hidden="true">
+          <div class="pacer" id="pacer"></div>
+        </div>
+        <p class="breathe-line" id="breathe-line">Settle. Soften the jaw.</p>
+        <p class="breathe-timer" id="breathe-timer">2:00</p>
+        <div class="breathe-actions">
+          <button type="button" class="btn btn-primary" id="breathe-start">Start</button>
+          <button type="button" class="btn btn-ghost" id="breathe-stop" disabled>Stop</button>
+        </div>
+        <p class="breathe-note">Offline guided breath. No audio required — a soft local tone is optional when you start.</p>
+      </div>
+    </section>
+
+    <section class="reminder" aria-labelledby="reminder-title">
+      <h2 class="section-title" id="reminder-title">Bedtime reminder</h2>
+      <p class="perm-explain">
+        Optional. Uses Chrome notifications and a local alarm on this device only — nothing is sent to a server. Enable only if you want a wind-down nudge before your 5-cycle bedtime.
+      </p>
+      <label class="toggle-row">
+        <input type="checkbox" id="reminder-enabled" />
+        <span>Remind me 30 minutes before bedtime</span>
+      </label>
+    </section>
+
+    <section class="funnel" aria-label="Hypnothera links">
+      <a
+        class="cta-primary"
+        href="https://hypnothera.ai/sleep-hypnosis-generator?utm_source=chrome&utm_medium=extension&utm_campaign=sleep_window"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Write a sleep session for tonight
+      </a>
+      <a
+        class="cta-secondary"
+        href="https://hypnothera.ai/tools?utm_source=chrome&utm_medium=extension&utm_campaign=sleep_window"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        More free tools
+      </a>
+    </section>
+
+    <footer class="footer">
+      <a
+        href="https://hypnothera.ai?utm_source=chrome&utm_medium=extension&utm_campaign=sleep_window"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Made by Hypnothera · hypnothera.ai
+      </a>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
