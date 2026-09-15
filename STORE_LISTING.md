@@ -27,8 +27,6 @@ Sleep Window is a free sleep cycle calculator and bedtime calculator for Chrome.
 
 This is a **planning heuristic**, not medical advice, not a medical device, and not a treatment for insomnia or any condition.
 
-**Keywords:** sleep cycle calculator, bedtime calculator, wake up time, sleep window, sleep schedule, 90 minute sleep cycles, best bedtime, best wake up time
-
 Made by Hypnothera. Explore free tools and sleep hypnosis sessions at hypnothera.ai.
 
 ## Category
